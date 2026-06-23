@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma 2D — Hitbox Decoupled</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: system-ui, sans-serif;
+    }
+
+    #game-wrapper {
+      position: relative;
+      width: 800px;
+      height: 450px;
+    }
+
+    canvas {
+      display: block;
+      border: 2px solid #e94560;
+      image-rendering: pixelated;
+    }
+
+    /* Overlay de seleção de personagem */
+    #char-select-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      background: rgba(10, 10, 20, 0.92);
+      z-index: 10;
+    }
+
+    #char-select-overlay.hidden {
+      display: none;
+    }
+
+    #char-select-overlay h1 {
+      color: #e94560;
+      font-size: 1.4rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .char-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 280px;
+    }
+
+    .char-buttons button {
+      padding: 14px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      background: #1a1a2e;
+      border: 2px solid #3d3d5c;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .char-buttons button:hover {
+      border-color: #e94560;
+      background: #252540;
+    }
+
+    .char-buttons button.locked {
+      border-color: #6c5ce7;
+    }
+
+    .char-buttons button.locked:hover {
+      border-color: #a29bfe;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-wrapper">
+    <canvas id="game" width="800" height="450"></canvas>
+
+    <div id="char-select-overlay">
+      <h1>SELECIONE SEU OPERADOR</h1>
+      <div class="char-buttons">
+        <button type="button" data-char="henri">Henri</button>
+        <button type="button" data-char="isaque">Isaque</button>
+        <button type="button" data-char="guilherme">Guilherme</button>
+        <button type="button" data-char="christopher" class="locked">🔒 Christopher</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
