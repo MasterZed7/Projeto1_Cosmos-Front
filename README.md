@@ -1,2 +1,2 @@
-# Projeto1_Cosmos-Back
-Toda a parte de back do projeto
+# Projeto1_Cosmos-Front
+Toda a parte de front do projeto
