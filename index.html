@@ -83,6 +83,53 @@
     .char-buttons button.locked:hover {
       border-color: #a29bfe;
     }
+
+    /* Overlay de Game Over */
+    #game-over-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 20;
+    }
+
+    #game-over-overlay.hidden {
+      display: none;
+    }
+
+    #game-over-overlay h1 {
+      color: #ff0040;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    #game-over-reason {
+      color: #f0f0f0;
+      font-size: 1.1rem;
+    }
+
+    #btn-restart {
+      margin-top: 8px;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      background: #1a1a2e;
+      border: 2px solid #e94560;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    #btn-restart:hover {
+      background: #252540;
+      border-color: #ff0040;
+    }
   </style>
 </head>
 <body>
@@ -97,6 +144,12 @@
         <button type="button" data-char="guilherme">Guilherme</button>
         <button type="button" data-char="christopher" class="locked">🔒 Christopher</button>
       </div>
+    </div>
+
+    <div id="game-over-overlay" class="hidden">
+      <h1>GAME OVER</h1>
+      <p id="game-over-reason"></p>
+      <button type="button" id="btn-restart">REINICIAR</button>
     </div>
   </div>
 
