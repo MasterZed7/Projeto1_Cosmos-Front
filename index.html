@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plataforma 2D — Hitbox Decoupled</title>
+  <title>Correntes do Cosmos</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #0d0d1a;
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,14 +20,89 @@
 
     #game-wrapper {
       position: relative;
-      width: 800px;
-      height: 450px;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     canvas {
       display: block;
-      border: 2px solid #e94560;
+      margin: 0 auto;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      background-color: black;
       image-rendering: pixelated;
+    }
+
+    /* Menu Principal */
+    #main-menu-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 36px;
+      background:
+        radial-gradient(ellipse at center, rgba(30, 20, 60, 0.55) 0%, rgba(0, 0, 0, 0.92) 70%),
+        #050510;
+      z-index: 40;
+    }
+
+    #main-menu-overlay.hidden {
+      display: none;
+    }
+
+    #main-menu-overlay h1 {
+      color: #ffffff;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      letter-spacing: 0.08em;
+      text-transform: none;
+      text-align: center;
+      text-shadow:
+        0 0 12px rgba(233, 69, 96, 0.9),
+        0 0 28px rgba(116, 185, 255, 0.55),
+        0 0 48px rgba(233, 69, 96, 0.35);
+    }
+
+    .main-menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: min(320px, 80vw);
+    }
+
+    .main-menu-buttons button {
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f0f0f0;
+      background: #12122a;
+      border: 2px solid #e94560;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+
+    .main-menu-buttons button:hover {
+      background: #1f1f3d;
+      border-color: #ff6b81;
+      box-shadow: 0 0 18px rgba(233, 69, 96, 0.35);
+      transform: translateY(-1px);
+    }
+
+    #btn-close {
+      border-color: #3d3d5c;
+    }
+
+    #btn-close:hover {
+      border-color: #a29bfe;
+      box-shadow: 0 0 18px rgba(162, 155, 254, 0.3);
     }
 
     /* Overlay de seleção de personagem */
@@ -84,6 +161,26 @@
       border-color: #a29bfe;
     }
 
+    #btn-back-main-menu {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      background: #1a1a2e;
+      border: 2px solid #3d3d5c;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    #btn-back-main-menu:hover {
+      border-color: #e94560;
+      background: #252540;
+    }
+
     /* Overlay de Game Over */
     #game-over-overlay {
       position: absolute;
@@ -130,13 +227,69 @@
       background: #252540;
       border-color: #ff0040;
     }
+
+    /* Overlay de Pausa */
+    #pause-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.82);
+      z-index: 30;
+    }
+
+    #pause-overlay.hidden {
+      display: none;
+    }
+
+    #pause-overlay h1 {
+      color: #e94560;
+      font-size: 1.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .pause-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 280px;
+    }
+
+    .pause-buttons button {
+      padding: 14px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      background: #1a1a2e;
+      border: 2px solid #3d3d5c;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .pause-buttons button:hover {
+      border-color: #e94560;
+      background: #252540;
+    }
   </style>
 </head>
 <body>
   <div id="game-wrapper">
     <canvas id="game" width="800" height="450"></canvas>
 
-    <div id="char-select-overlay">
+    <div id="main-menu-overlay">
+      <h1>Correntes do Cosmos</h1>
+      <div class="main-menu-buttons">
+        <button type="button" id="btn-start">Start</button>
+        <button type="button" id="btn-close">Fechar o jogo</button>
+      </div>
+    </div>
+
+    <div id="char-select-overlay" class="hidden">
       <h1>SELECIONE SEU OPERADOR</h1>
       <div class="char-buttons">
         <button type="button" data-char="henri">Henri</button>
@@ -144,12 +297,22 @@
         <button type="button" data-char="guilherme">Guilherme</button>
         <button type="button" data-char="christopher" class="locked">🔒 Christopher</button>
       </div>
+      <button type="button" id="btn-back-main-menu">Voltar ao menu</button>
     </div>
 
     <div id="game-over-overlay" class="hidden">
       <h1>GAME OVER</h1>
       <p id="game-over-reason"></p>
       <button type="button" id="btn-restart">REINICIAR</button>
+    </div>
+
+    <div id="pause-overlay" class="hidden">
+      <h1>PAUSADO</h1>
+      <div class="pause-buttons">
+        <button type="button" id="btn-resume">1. Despausar</button>
+        <button type="button" id="btn-back-menu">2. Voltar ao menu</button>
+        <button type="button" id="btn-close-game">3. Fechar o jogo</button>
+      </div>
     </div>
   </div>
 
